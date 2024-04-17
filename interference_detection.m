@@ -33,4 +33,24 @@ for i=1:cnt
     end
 end
 
+%%
+%镜频
+for i=1:cnt
+    for m=1:4
+        for n=1:4
+            fIM1=abs(m*(fHIF+B/2)+n*fHLO(i));
+            fIM2=abs(m*(fHIF-B/2)+n*fHLO(i));
+            fIM3=abs(m*(fHIF-B/2)-n*fHLO(i));
+            fIM4=abs(m*(fHIF+B/2)-n*fHLO(i));
+            fHIM=max([fIM1,fIM2,fIM3,fIM4]);
+            fLIM=min([fIM1,fIM2,fIM3,fIM4]);
+            if((fHIM>=fRF(i)-B/2&&fHIM<=fRF(i)+B/2)||(fLIM>=fRF(i)-B/2&&fLIM<=fRF(i)+B/2))
+                if(m~=1||n~=1)
+                 disp(['阵面',num2str(i),'出现',num2str(m),',',num2str(n),'镜像干扰'])
+                end
+            end
+        end
+    end
 
+
+end
