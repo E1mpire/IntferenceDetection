@@ -9,7 +9,7 @@ cnt=4;
 %谐波干扰
 for i=1:cnt
     for k=1:5  %本振谐波5阶以后较小
-        if(k*fLLO>=fRF(i)-B/2&&k*fLLO<=fRF(i)+B/2)
+        if(RangeDetect(k*fLLO,16000,17000))  %其实上面RF的频率范围是16000~17000
             disp(["阵面",num2str(i),"出现谐波干扰"])
         end
     end
@@ -23,7 +23,7 @@ for i=1:cnt
         for n=1:4
             fHma=m*fHLO(i)+n*(fHIF+B/2);
             fLma=m*fHLO(i)+n*(fHIF-B/2);
-            if((fHma>=fRF(i)-B/2&&fHma<=fRF(i)+B/2)||(fLma>=fRF(i)-B/2&&fLma<=fRF(i)+B/2))
+            if(RangeDetect(fHma,16000,17000)||RangeDetect(fLma,16000,17000))
                 if(m~=1||n~=1)
                 disp(['阵面',num2str(i),'出现',num2str(m),',',num2str(n),'交调干扰'])
                 disp(['干扰频率范围:(',num2str(fLma),',',num2str(fHma),')'])
@@ -44,7 +44,7 @@ for i=1:cnt
             fIM4=abs(m*(fHIF+B/2)-n*fHLO(i));
             fHIM=max([fIM1,fIM2,fIM3,fIM4]);
             fLIM=min([fIM1,fIM2,fIM3,fIM4]);
-            if((fHIM>=fRF(i)-B/2&&fHIM<=fRF(i)+B/2)||(fLIM>=fRF(i)-B/2&&fLIM<=fRF(i)+B/2))
+            if(RangeDetect(fHIM,16000,17000)||RangeDetect(fLIM,16000,17000))
                 if(m~=1||n~=1)
                  disp(['阵面',num2str(i),'出现',num2str(m),',',num2str(n),'镜像干扰'])
                 end
@@ -52,5 +52,14 @@ for i=1:cnt
         end
     end
 
+
+end
+
+function statue = RangeDetect(num,a,b)
+if(num>=a&&num<=b)
+    statue = true;
+else
+    statue = false;
+end
 
 end
